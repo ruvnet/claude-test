@@ -9,25 +9,18 @@ PROJECT_DIR="${PWD}"
 export PWD="${PROJECT_DIR}"
 export CLAUDE_WORKING_DIR="${PROJECT_DIR}"
 
-# Try to find claude-flow binary
-# Check common locations for npm/npx installations
-
-# 1. Local node_modules (npm install claude-flow)
+# Try to find claude-flow
+# 1. Local node_modules
 if [ -f "${PROJECT_DIR}/node_modules/.bin/claude-flow" ]; then
   cd "${PROJECT_DIR}"
   exec "${PROJECT_DIR}/node_modules/.bin/claude-flow" "$@"
 
-# 2. Parent directory node_modules (monorepo setup)
-elif [ -f "${PROJECT_DIR}/../node_modules/.bin/claude-flow" ]; then
-  cd "${PROJECT_DIR}"
-  exec "${PROJECT_DIR}/../node_modules/.bin/claude-flow" "$@"
-
-# 3. Global installation (npm install -g claude-flow)
+# 2. Global installation
 elif command -v claude-flow &> /dev/null; then
   cd "${PROJECT_DIR}"
   exec claude-flow "$@"
 
-# 4. Fallback to npx (will download if needed)
+# 3. Fallback to npx
 else
   cd "${PROJECT_DIR}"
   exec npx claude-flow@latest "$@"
