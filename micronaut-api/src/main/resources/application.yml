@@ -1,0 +1,84 @@
+micronaut:
+  application:
+    name: micronaut-api
+  server:
+    port: 8080
+    host: localhost
+    cors:
+      enabled: true
+      configurations:
+        default:
+          allowedOrigins:
+            - "http://localhost:3000"
+            - "http://localhost:8080"
+          allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+          allowedHeaders:
+            - "*"
+          allowCredentials: true
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "mySecretKey123456789012345678901234567890"
+        generator:
+          access-token:
+            expiration: 3600
+    intercept-url-map:
+      - pattern: /api/auth/**
+        access:
+          - isAnonymous()
+      - pattern: /api/users
+        httpMethod: GET
+        access:
+          - isAuthenticated()
+      - pattern: /api/users/**
+        access:
+          - isAuthenticated()
+      - pattern: /api/profile
+        access:
+          - isAuthenticated()
+      - pattern: /health
+        access:
+          - isAnonymous()
+  data:
+    pageable:
+      default-page-size: 20
+      max-page-size: 100
+
+datasources:
+  default:
+    url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    com.api: DEBUG
+    io.micronaut.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+api:
+  version: v1
+  title: "Micronaut REST API"
+  description: "A comprehensive REST API built with Micronaut framework"

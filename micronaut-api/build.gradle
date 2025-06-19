@@ -1,0 +1,99 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "io.micronaut.application" version "4.2.1"
+    id "io.micronaut.aot" version "4.2.1"
+}
+
+version = "0.1.0"
+group = "com.api"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Micronaut Core
+    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-runtime")
+    
+    // Security & JWT
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.security:micronaut-security")
+    
+    // Data & JPA
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("com.h2database:h2")
+    
+    // Validation
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+    implementation("jakarta.validation:jakarta.validation-api")
+    
+    // OpenAPI/Swagger
+    implementation("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.swagger.core.v3:swagger-annotations")
+    
+    // BCrypt for password hashing
+    implementation("org.mindrot:jbcrypt:0.4")
+    
+    // Jakarta persistence and transactions
+    implementation("jakarta.persistence:jakarta.persistence-api")
+    implementation("jakarta.transaction:jakarta.transaction-api")
+    
+    // Logging
+    runtimeOnly("ch.qos.logback:logback-classic")
+    
+    // Testing
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.mockito:mockito-core")
+    
+    // Annotation processing
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+}
+
+application {
+    mainClass.set("com.api.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+micronaut {
+    version("4.2.4")
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.api.*")
+    }
+    aot {
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+    }
+}
+
+graalvmNative.toolchainDetection = false
+
+tasks.named("test") {
+    useJUnitPlatform()
+}
+
+tasks.named("shadowJar") {
+    mergeServiceFiles()
+}

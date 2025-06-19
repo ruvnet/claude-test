@@ -1,0 +1,76 @@
+micronaut:
+  application:
+    name: secure-api
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowed-origins:
+            - "http://localhost:3000"
+            - "http://localhost:8080"
+          allowed-methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+          allowed-headers:
+            - "*"
+          allow-credentials: true
+          max-age: 3600
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}'
+        generator:
+          access-token:
+            expiration: 3600  # 1 hour
+          refresh-token:
+            enabled: true
+            secret: '${JWT_REFRESH_SECRET:pleaseChangeThisRefreshSecretForANewOne}'
+            expiration: 604800  # 7 days
+    endpoints:
+      login:
+        enabled: true
+        path: /api/auth/login
+      logout:
+        enabled: true
+        path: /api/auth/logout
+        get-allowed: true
+    reject-not-found: false
+    intercept-url-map:
+      - pattern: /api/auth/**
+        access: isAnonymous()
+      - pattern: /api/public/**
+        access: isAnonymous()
+      - pattern: /health
+        access: isAnonymous()
+      - pattern: /api/admin/**
+        access: hasRole('ADMIN')
+      - pattern: /api/**
+        access: isAuthenticated()
+
+datasources:
+  default:
+    url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2
+
+jpa:
+  default:
+    properties:
+      hibernate.hbm2ddl.auto: update
+      hibernate.show_sql: false
+
+logger:
+  levels:
+    com.example: DEBUG
+    io.micronaut.security: DEBUG

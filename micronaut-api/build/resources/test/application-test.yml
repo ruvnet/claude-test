@@ -1,0 +1,43 @@
+micronaut:
+  application:
+    name: micronautAuthApiTest
+  server:
+    port: -1 # Random port for testing
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "testSecret123456789012345678901234567890"
+        generator:
+          access-token:
+            expiration: 3600
+          refresh-token:
+            enabled: true
+            expiration: 604800
+
+datasources:
+  default:
+    url: jdbc:h2:mem:testDb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        show_sql: false
+        format_sql: false
+
+logging:
+  level:
+    com.example: DEBUG
+    io.micronaut.security: WARN
+    org.hibernate.SQL: WARN

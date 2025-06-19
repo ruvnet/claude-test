@@ -1,0 +1,1115 @@
+openapi: 3.0.1
+info:
+  title: Micronaut REST API
+  description: "A comprehensive REST API built with Micronaut framework featuring\
+    \ user management, authentication, and CRUD operations."
+  contact:
+    name: API Support
+    email: support@api.com
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Development Server
+tags:
+- name: User Management
+  description: User management and profile endpoints
+- name: Authentication
+  description: User authentication and registration endpoints
+- name: User Profile
+  description: User profile management endpoints
+paths:
+  /api/auth/change-password:
+    put:
+      tags:
+      - Authentication
+      summary: Change password
+      description: Changes the password for the authenticated user
+      operationId: changePassword
+      requestBody:
+        description: the password change request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthController.PasswordChangeRequest'
+        required: true
+      responses:
+        "200":
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid request data
+        "401":
+          description: Current password is incorrect
+      security:
+      - BearerAuth: []
+  /api/auth/check-email/{email}:
+    get:
+      tags:
+      - Authentication
+      summary: Check email availability
+      description: Checks if an email is available for registration
+      operationId: checkEmail
+      parameters:
+      - name: email
+        in: path
+        description: the email to check
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Email availability checked
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/auth/check-username/{username}:
+    get:
+      tags:
+      - Authentication
+      summary: Check username availability
+      description: Checks if a username is available for registration
+      operationId: checkUsername
+      parameters:
+      - name: username
+        in: path
+        description: the username to check
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Username availability checked
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/auth/login:
+    post:
+      tags:
+      - Authentication
+      summary: User login
+      description: Authenticates user credentials and returns JWT token
+      operationId: login
+      requestBody:
+        description: the login request data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginRequest'
+        required: true
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Invalid credentials
+        "400":
+          description: Invalid request data
+  /api/auth/refresh:
+    post:
+      tags:
+      - Authentication
+      summary: Refresh JWT token
+      description: Generates a new JWT token for the authenticated user
+      operationId: refreshToken
+      responses:
+        "200":
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Invalid or expired token
+      security:
+      - BearerAuth: []
+  /api/auth/register:
+    post:
+      tags:
+      - Authentication
+      summary: Register new user
+      description: Creates a new user account with the provided information
+      operationId: register
+      requestBody:
+        description: the registration request data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+        required: true
+      responses:
+        "201":
+          description: User registered successfully
+        "400":
+          description: Invalid registration data
+        "409":
+          description: Username or email already exists
+  /api/auth/stats:
+    get:
+      tags:
+      - Authentication
+      summary: Get authentication statistics
+      description: Returns authentication statistics (admin only)
+      operationId: getAuthStats
+      responses:
+        "200":
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "403":
+          description: Access denied
+      security:
+      - BearerAuth: []
+  /api/auth/verify-email:
+    post:
+      tags:
+      - Authentication
+      summary: Verify email address
+      description: Verifies user email address using verification token
+      operationId: verifyEmail
+      requestBody:
+        description: the email verification request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthController.EmailVerificationRequest'
+        required: true
+      responses:
+        "200":
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid verification token
+        "404":
+          description: User not found
+  /api/profile:
+    get:
+      tags:
+      - User Profile
+      summary: Get current user profile
+      description: Retrieves the profile information for the authenticated user
+      operationId: getCurrentUserProfile
+      responses:
+        "200":
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - User Profile
+      summary: Update current user profile
+      description: Updates the profile information for the authenticated user
+      operationId: updateCurrentUserProfile
+      requestBody:
+        description: the profile update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+        required: true
+      responses:
+        "200":
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        "400":
+          description: Invalid update data
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - User Profile
+      summary: Delete current user profile
+      description: Deletes the profile for the authenticated user
+      operationId: deleteCurrentUserProfile
+      responses:
+        "200":
+          description: Profile deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/profile/newsletter:
+    put:
+      tags:
+      - User Profile
+      summary: Update newsletter subscription
+      description: Updates the newsletter subscription status for the authenticated
+        user
+      operationId: updateNewsletterSubscription
+      requestBody:
+        description: the subscription update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileController.NewsletterSubscriptionRequest'
+        required: true
+      responses:
+        "200":
+          description: Subscription updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid request data
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/profile/picture:
+    put:
+      tags:
+      - User Profile
+      summary: Update profile picture
+      description: Updates the profile picture URL for the authenticated user
+      operationId: updateProfilePicture
+      requestBody:
+        description: the profile picture update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileController.ProfilePictureRequest'
+        required: true
+      responses:
+        "200":
+          description: Profile picture updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid picture URL
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/profile/stats:
+    get:
+      tags:
+      - User Profile
+      summary: Get profile statistics
+      description: Returns profile statistics (admin only)
+      operationId: getProfileStats
+      responses:
+        "200":
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileService.ProfileStats'
+        "403":
+          description: Access denied
+      security:
+      - BearerAuth: []
+  /api/profile/visibility:
+    put:
+      tags:
+      - User Profile
+      summary: Update profile visibility
+      description: Updates the profile visibility setting for the authenticated user
+      operationId: updateProfileVisibility
+      requestBody:
+        description: the visibility update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileController.ProfileVisibilityRequest'
+        required: true
+      responses:
+        "200":
+          description: Visibility updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Invalid visibility value
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/profile/{userId}:
+    get:
+      tags:
+      - User Profile
+      summary: Get user profile by ID
+      description: Retrieves user profile by ID (admin or own profile only)
+      operationId: getUserProfile
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        "403":
+          description: Access denied
+        "404":
+          description: Profile not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - User Profile
+      summary: Update user profile by ID
+      description: Updates user profile by ID (admin only)
+      operationId: updateUserProfile
+      parameters:
+      - name: userId
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: the profile update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+        required: true
+      responses:
+        "200":
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        "400":
+          description: Invalid update data
+        "403":
+          description: Access denied
+        "404":
+          description: Profile not found
+      security:
+      - BearerAuth: []
+  /api/users:
+    get:
+      tags:
+      - User Management
+      summary: Get all users
+      description: Retrieves a paginated list of all users
+      operationId: getAllUsers
+      parameters:
+      - name: pageable
+        in: query
+        description: Pagination parameters
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_UserResponse_'
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/users/enabled:
+    get:
+      tags:
+      - User Management
+      summary: Get enabled users
+      description: Retrieves a paginated list of enabled users only
+      operationId: getEnabledUsers
+      parameters:
+      - name: pageable
+        in: query
+        description: Pagination parameters
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: Enabled users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_UserResponse_'
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/users/search:
+    get:
+      tags:
+      - User Management
+      summary: Search users
+      description: "Searches users by username, first name, or last name"
+      operationId: searchUsers
+      parameters:
+      - name: q
+        in: query
+        description: Search term
+        required: true
+        schema:
+          type: string
+      - name: pageable
+        in: query
+        description: Pagination parameters
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page_UserResponse_'
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/users/stats:
+    get:
+      tags:
+      - User Management
+      summary: Get user statistics
+      description: Returns user statistics (admin only)
+      operationId: getUserStats
+      responses:
+        "200":
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserService.UserStats'
+        "403":
+          description: Access denied
+      security:
+      - BearerAuth: []
+  /api/users/username/{username}:
+    get:
+      tags:
+      - User Management
+      summary: Get user by username
+      description: Retrieves user information by username
+      operationId: getUserByUsername
+      parameters:
+      - name: username
+        in: path
+        description: Username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "404":
+          description: User not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+  /api/users/{id}:
+    get:
+      tags:
+      - User Management
+      summary: Get user by ID
+      description: Retrieves user information by user ID
+      operationId: getUserById
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "404":
+          description: User not found
+        "401":
+          description: Unauthorized access
+      security:
+      - BearerAuth: []
+    put:
+      tags:
+      - User Management
+      summary: Update user
+      description: Updates user information (users can only update their own profile
+        unless admin)
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: the user update data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserController.UserUpdateRequest'
+        required: true
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid update data
+        "403":
+          description: Access denied
+        "404":
+          description: User not found
+      security:
+      - BearerAuth: []
+    delete:
+      tags:
+      - User Management
+      summary: Delete user
+      description: Deletes a user by ID (admin only)
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "403":
+          description: Access denied
+        "404":
+          description: User not found
+      security:
+      - BearerAuth: []
+  /api/users/{id}/status:
+    put:
+      tags:
+      - User Management
+      summary: Enable/disable user
+      description: Enables or disables a user account (admin only)
+      operationId: setUserStatus
+      parameters:
+      - name: id
+        in: path
+        description: User ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: the enable/disable request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserController.UserStatusRequest'
+        required: true
+      responses:
+        "200":
+          description: User status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "403":
+          description: Access denied
+        "404":
+          description: User not found
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    AuthController.EmailVerificationRequest:
+      required:
+      - token
+      - username
+      type: object
+      properties:
+        token:
+          minLength: 1
+          type: string
+        username:
+          minLength: 1
+          type: string
+      description: DTO for email verification requests.
+    AuthController.PasswordChangeRequest:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          minLength: 1
+          type: string
+        newPassword:
+          minLength: 8
+          type: string
+      description: DTO for password change requests.
+    Page_UserResponse_:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Slice_UserResponse_'
+      - required:
+        - totalSize
+        properties:
+          totalSize:
+            type: integer
+            format: int64
+          totalPages:
+            type: integer
+            format: int32
+    Pageable:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Sort'
+      - required:
+        - size
+        - sort
+        properties:
+          number:
+            type: integer
+            format: int32
+          size:
+            type: integer
+            format: int32
+          sort:
+            $ref: '#/components/schemas/Sort'
+    ProfileController.NewsletterSubscriptionRequest:
+      required:
+      - subscribed
+      type: object
+      properties:
+        subscribed:
+          type: boolean
+      description: DTO for newsletter subscription requests.
+    ProfileController.ProfilePictureRequest:
+      required:
+      - profilePictureUrl
+      type: object
+      properties:
+        profilePictureUrl:
+          maxLength: 500
+          minLength: 1
+          type: string
+      description: DTO for profile picture requests.
+    ProfileController.ProfileVisibilityRequest:
+      required:
+      - visibility
+      type: object
+      properties:
+        visibility:
+          $ref: '#/components/schemas/UserProfile.ProfileVisibility'
+      description: DTO for profile visibility requests.
+    ProfileService.ProfileStats:
+      required:
+      - newsletterSubscribers
+      - profilesWithPhones
+      - profilesWithPictures
+      - totalProfiles
+      type: object
+      properties:
+        totalProfiles:
+          type: integer
+          format: int64
+        profilesWithPictures:
+          type: integer
+          format: int64
+        profilesWithPhones:
+          type: integer
+          format: int64
+        newsletterSubscribers:
+          type: integer
+          format: int64
+      description: Inner class to represent profile statistics.
+    ProfileUpdateRequest:
+      type: object
+      properties:
+        firstName:
+          maxLength: 50
+          type: string
+        lastName:
+          maxLength: 50
+          type: string
+        phoneNumber:
+          pattern: "^[+]?[0-9\\s\\-()]{7,20}$"
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          $ref: '#/components/schemas/UserProfile.Gender'
+        address:
+          maxLength: 100
+          type: string
+        city:
+          maxLength: 50
+          type: string
+        state:
+          maxLength: 50
+          type: string
+        postalCode:
+          maxLength: 20
+          type: string
+        country:
+          maxLength: 50
+          type: string
+        profilePictureUrl:
+          maxLength: 500
+          type: string
+        bio:
+          maxLength: 500
+          type: string
+        websiteUrl:
+          maxLength: 200
+          type: string
+        occupation:
+          maxLength: 100
+          type: string
+        company:
+          maxLength: 100
+          type: string
+        timezone:
+          maxLength: 50
+          type: string
+        language:
+          maxLength: 10
+          type: string
+        newsletterSubscribed:
+          type: boolean
+        profileVisibility:
+          $ref: '#/components/schemas/UserProfile.ProfileVisibility'
+      description: "DTO for user profile update requests. This class represents the\
+        \ data structure for updating user profile information, including personal\
+        \ details and preferences."
+    Slice_UserResponse_:
+      required:
+      - content
+      - pageable
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        pageNumber:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+    Sort:
+      required:
+      - orderBy
+      type: object
+      properties:
+        orderBy:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sort.Order'
+    Sort.Order:
+      required:
+      - direction
+      - ignoreCase
+      - property
+      type: object
+      properties:
+        ignoreCase:
+          type: boolean
+        direction:
+          $ref: '#/components/schemas/Sort.Order.Direction'
+        property:
+          type: string
+        ascending:
+          type: boolean
+    Sort.Order.Direction:
+      type: string
+      enum:
+      - ASC
+      - DESC
+    UserController.UserStatusRequest:
+      required:
+      - enabled
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: DTO for user status requests.
+    UserController.UserUpdateRequest:
+      type: object
+      properties:
+        firstName:
+          maxLength: 50
+          type: string
+        lastName:
+          maxLength: 50
+          type: string
+      description: DTO for user update requests.
+    UserLoginRequest:
+      required:
+      - password
+      - usernameOrEmail
+      type: object
+      properties:
+        usernameOrEmail:
+          minLength: 1
+          type: string
+        password:
+          minLength: 1
+          type: string
+        rememberMe:
+          type: boolean
+      description: DTO for user login requests. This class represents the data structure
+        for user authentication containing credentials required for login.
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        phoneNumber:
+          pattern: "^[+]?[0-9\\s\\-()]{7,20}$"
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          $ref: '#/components/schemas/UserProfile.Gender'
+        address:
+          maxLength: 100
+          type: string
+        city:
+          maxLength: 50
+          type: string
+        state:
+          maxLength: 50
+          type: string
+        postalCode:
+          maxLength: 20
+          type: string
+        country:
+          maxLength: 50
+          type: string
+        profilePictureUrl:
+          maxLength: 500
+          type: string
+        bio:
+          maxLength: 500
+          type: string
+        websiteUrl:
+          maxLength: 200
+          type: string
+        occupation:
+          maxLength: 100
+          type: string
+        company:
+          maxLength: 100
+          type: string
+        timezone:
+          maxLength: 50
+          type: string
+        language:
+          maxLength: 10
+          type: string
+        newsletterSubscribed:
+          type: boolean
+        profileVisibility:
+          $ref: '#/components/schemas/UserProfile.ProfileVisibility'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        fullAddress:
+          type: string
+      description: UserProfile entity for extended user information. This entity stores
+        additional user profile details that are not essential for authentication
+        but useful for user management.
+    UserProfile.Gender:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - OTHER
+      - PREFER_NOT_TO_SAY
+    UserProfile.ProfileVisibility:
+      type: string
+      enum:
+      - PUBLIC
+      - PRIVATE
+      - FRIENDS_ONLY
+    UserRegistrationRequest:
+      required:
+      - confirmPassword
+      - email
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          maxLength: 50
+          minLength: 3
+          type: string
+        email:
+          minLength: 1
+          type: string
+          format: email
+        password:
+          minLength: 8
+          type: string
+        confirmPassword:
+          minLength: 1
+          type: string
+        firstName:
+          maxLength: 50
+          type: string
+        lastName:
+          maxLength: 50
+          type: string
+        passwordsMatch:
+          type: boolean
+      description: DTO for user registration requests. This class represents the data
+        structure for user registration containing all required fields for creating
+        a new user account.
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        fullName:
+          type: string
+        enabled:
+          type: boolean
+        emailVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        roles:
+          type: array
+          items:
+            type: string
+      description: "DTO for user response data. This class represents the user data\
+        \ structure returned by the API, excluding sensitive information like passwords."
+    UserService.UserStats:
+      required:
+      - disabledUsers
+      - enabledUsers
+      - recentUsers
+      - totalUsers
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          format: int64
+        enabledUsers:
+          type: integer
+          format: int64
+        disabledUsers:
+          type: integer
+          format: int64
+        recentUsers:
+          type: integer
+          format: int64
+      description: Inner class to represent user statistics.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      description: "JWT token for API authentication. Format: Bearer <token>"
+      scheme: bearer
+      bearerFormat: JWT

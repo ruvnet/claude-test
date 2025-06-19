@@ -1,0 +1,59 @@
+Manifest-Version: 1.0
+Class-Path: resources/ classes/ libs/micronaut-data-hibernate-jpa-4.3.1.
+ jar libs/micronaut-openapi-6.1.0.jar libs/micronaut-security-jwt-4.4.0.
+ jar libs/micronaut-security-4.4.0.jar libs/micronaut-hibernate-jpa-5.2.
+ 0.jar libs/micronaut-jdbc-hikari-5.2.0.jar libs/micronaut-validation-4.
+ 2.0.jar libs/micronaut-data-jpa-4.3.1.jar libs/micronaut-data-runtime-4
+ .3.1.jar libs/micronaut-data-model-4.3.1.jar libs/micronaut-data-tx-hib
+ ernate-4.3.1.jar libs/micronaut-openapi-annotations-6.1.0.jar libs/micr
+ onaut-openapi-common-6.1.0.jar libs/micronaut-security-annotations-4.4.
+ 0.jar libs/micronaut-serde-api-2.4.0.jar libs/micronaut-reactor-3.1.0.j
+ ar libs/micronaut-data-tx-jdbc-4.3.1.jar libs/micronaut-data-connection
+ -jdbc-4.3.1.jar libs/micronaut-jdbc-5.2.0.jar libs/micronaut-data-tx-4.
+ 3.1.jar libs/micronaut-data-connection-hibernate-4.3.1.jar libs/microna
+ ut-data-connection-4.3.1.jar libs/micronaut-http-server-netty-4.2.4.jar
+  libs/micronaut-jackson-databind-4.2.4.jar libs/micronaut-runtime-4.2.4
+ .jar libs/h2-2.2.224.jar libs/hibernate-validator-8.0.1.Final.jar libs/
+ jakarta.validation-api-3.0.2.jar libs/swagger-annotations-2.2.19.jar li
+ bs/jbcrypt-0.4.jar libs/hibernate-core-6.2.13.Final.jar libs/jakarta.pe
+ rsistence-api-3.1.0.jar libs/jakarta.transaction-api-2.0.1.jar libs/mic
+ ronaut-discovery-core-4.2.4.jar libs/micronaut-http-server-4.2.4.jar li
+ bs/micronaut-http-netty-4.2.4.jar libs/micronaut-router-4.2.4.jar libs/
+ micronaut-jackson-core-4.2.4.jar libs/micronaut-json-core-4.2.4.jar lib
+ s/micronaut-http-4.2.4.jar libs/micronaut-context-propagation-4.2.4.jar
+  libs/micronaut-retry-4.2.4.jar libs/micronaut-context-4.2.4.jar libs/m
+ icronaut-aop-4.2.4.jar libs/micronaut-buffer-netty-4.2.4.jar libs/micro
+ naut-inject-4.2.4.jar libs/logback-classic-1.4.13.jar libs/jboss-loggin
+ g-3.5.0.Final.jar libs/classmate-1.5.1.jar libs/jackson-datatype-jdk8-2
+ .15.3.jar libs/jackson-datatype-jsr310-2.15.3.jar libs/jackson-dataform
+ at-yaml-2.15.3.jar libs/jackson-databind-2.15.3.jar libs/swagger-models
+ -2.2.19.jar libs/jackson-annotations-2.15.3.jar libs/jackson-core-2.15.
+ 3.jar libs/jakarta.annotation-api-2.1.1.jar libs/netty-codec-http2-4.1.
+ 106.Final.jar libs/netty-codec-http-4.1.106.Final.jar libs/netty-handle
+ r-4.1.106.Final.jar libs/netty-codec-4.1.106.Final.jar libs/netty-trans
+ port-native-unix-common-4.1.106.Final.jar libs/netty-transport-4.1.106.
+ Final.jar libs/netty-buffer-4.1.106.Final.jar libs/reactor-core-3.5.11.
+ jar libs/micronaut-core-reactive-4.2.4.jar libs/reactive-streams-1.0.4.
+ jar libs/snakeyaml-2.1.jar libs/micronaut-core-4.2.4.jar libs/logback-c
+ ore-1.4.13.jar libs/HikariCP-5.1.0.jar libs/slf4j-api-2.0.9.jar libs/fl
+ exmark-html2md-converter-0.64.8.jar libs/javadoc-parser-0.3.1.jar libs/
+ jsoup-1.16.2.jar libs/nimbus-jose-jwt-9.37.1.jar libs/netty-resolver-4.
+ 1.106.Final.jar libs/netty-common-4.1.106.Final.jar libs/jakarta.inject
+ -api-2.0.1.jar libs/hibernate-commons-annotations-6.0.6.Final.jar libs/
+ jandex-3.0.5.jar libs/byte-buddy-1.14.7.jar libs/jaxb-runtime-4.0.2.jar
+  libs/jaxb-core-4.0.2.jar libs/jakarta.xml.bind-api-4.0.0.jar libs/antl
+ r4-runtime-4.10.1.jar libs/flexmark-ext-emoji-0.64.8.jar libs/flexmark-
+ jira-converter-0.64.8.jar libs/flexmark-ext-gfm-strikethrough-0.64.8.ja
+ r libs/flexmark-ext-tables-0.64.8.jar libs/flexmark-ext-wikilink-0.64.8
+ .jar libs/flexmark-ext-ins-0.64.8.jar libs/flexmark-ext-superscript-0.6
+ 4.8.jar libs/flexmark-util-0.64.8.jar libs/flexmark-0.64.8.jar libs/jci
+ p-annotations-1.0-1.jar libs/angus-activation-2.0.0.jar libs/jakarta.ac
+ tivation-api-2.1.1.jar libs/flexmark-util-format-0.64.8.jar libs/flexma
+ rk-util-ast-0.64.8.jar libs/flexmark-util-builder-0.64.8.jar libs/flexm
+ ark-util-dependency-0.64.8.jar libs/flexmark-util-html-0.64.8.jar libs/
+ flexmark-util-options-0.64.8.jar libs/flexmark-util-sequence-0.64.8.jar
+  libs/flexmark-util-collection-0.64.8.jar libs/flexmark-util-data-0.64.
+ 8.jar libs/flexmark-util-misc-0.64.8.jar libs/flexmark-util-visitor-0.6
+ 4.8.jar libs/txw2-4.0.2.jar libs/istack-commons-runtime-4.1.1.jar
+Main-Class: com.api.Application
+
