@@ -1,0 +1,13 @@
+{
+  "objective": "Research cloud architecture",
+  "strategy": "research",
+  "mode": "distributed",
+  "maxAgents": 5,
+  "timeout": 60,
+  "parallel": false,
+  "monitor": false,
+  "output": "json",
+  "outputDir": "./reports",
+  "timestamp": "2025-06-19T16:06:19.603Z",
+  "id": "swarm-research-distributed-1750349179604"
+}

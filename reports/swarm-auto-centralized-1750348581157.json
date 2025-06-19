@@ -1,0 +1,13 @@
+{
+  "objective": "find the latest ai news",
+  "strategy": "auto",
+  "mode": "centralized",
+  "maxAgents": 5,
+  "timeout": 60,
+  "parallel": false,
+  "monitor": false,
+  "output": "json",
+  "outputDir": "./reports",
+  "timestamp": "2025-06-19T15:56:21.157Z",
+  "id": "swarm-auto-centralized-1750348581157"
+}

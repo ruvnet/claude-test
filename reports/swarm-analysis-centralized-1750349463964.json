@@ -1,0 +1,13 @@
+{
+  "objective": "research the development of a zero person startup and plan in ./plan/ dont implement just document",
+  "strategy": "analysis",
+  "mode": "centralized",
+  "maxAgents": 10,
+  "timeout": 60,
+  "parallel": true,
+  "monitor": false,
+  "output": "json",
+  "outputDir": "./reports",
+  "timestamp": "2025-06-19T16:11:03.963Z",
+  "id": "swarm-analysis-centralized-1750349463964"
+}
